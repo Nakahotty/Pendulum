@@ -1,0 +1,23 @@
+dataX = {{0, Pi/2, Pi, 3 Pi/2, 2 Pi - 0.01}, {0, 0.5, 1, 0.5, 0}};
+
+x[t_] := a0 + a1 Cos[t] + b1 Sin[t] + a2 Cos[2 t] + b2 Sin[2 t]
+
+sol = NSolve[
+    Table[x[dataX[[1, i]]] == dataX[[2, i]], {i, 1, 5}], {a0, a1, a2, 
+    b1, b2}];
+
+x2[t_] = x[t] /. sol[[1]];
+
+dataY = {{0, Pi/2, Pi, 3 Pi/2, 2 Pi - 0.01}, {0, -0.4, 0, -0.4, 0}};
+
+y[t_] := a0 + a1*Cos[t] + b1*Sin[t] + a2*Cos[2 t] + b2*Sin[2 t]
+sol = NSolve[
+   Table[y[dataY[[1, i]]] == dataY[[2, i]], {i, 1, 5}], {a0, a1, a2, 
+    b1, b2}];
+y2[t_] := y[t] /. sol[[1]];
+
+
+Animate[Graphics[{Circle[{x2[t], y2[t]}, 0.25], 
+   Line[{{x2[t], y2[t]}, {0.5, 1}}]}, 
+  PlotRange -> {{-0.25, 1.25}, {-0.75, 1.1}}, Axes -> True], {t, 0, 
+  2 Pi, 0.1}, AnimationRate -> 5]
